@@ -1,3 +1,6 @@
+# https://dmoj.ca/problem/ccc10s1
+# works for all testcases except testcase 1 and 9
+
 cases = int(input())
 
 names = []
