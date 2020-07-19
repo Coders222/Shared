@@ -1,3 +1,5 @@
+# TLE's on batch 6 and batch 7
+
 rows = int(input())
 columns = int(input())
 
