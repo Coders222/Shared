@@ -1,7 +1,7 @@
 package contest;
 import java.io.*;
 import java.util.Arrays;
-public class CCC16{
+public class CCC16S2{
 	static void merge(int []ar, int l, int m, int r) {
 		// Find sizes of two subarrays to be merged
 		int n1 = m - l + 1;
