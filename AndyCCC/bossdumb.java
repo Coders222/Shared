@@ -1,7 +1,7 @@
 package contest;
 import java.io.*;
 import java.util.Stack;
-public class bossdumb {
+public class CCC15S1 {
 
 	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
