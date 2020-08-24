@@ -12,4 +12,7 @@ andyvictim2 = {'name': 'Aidan', 'age': '14', 'ethnicity': 'Corona'}
 andyvictim3 = {'name': 'Cyron', 'age': '14', 'ethnicity': 'Filipino'}
 
 print("It is", time)
-print("None of them are legal. Sorry")
+if list(time[-1:-2]) == "24":
+    print("ITS SHOWTIMEEEEE")
+else:
+    print("None of them are legal yet Andy. Sorry, stick to the hub (github)")
