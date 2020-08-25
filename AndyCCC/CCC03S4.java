@@ -1,4 +1,3 @@
-package contest;
 import java.io.*;
 import java.util.Arrays;
 public class CCC03S4 {
@@ -7,7 +6,6 @@ public class CCC03S4 {
 		for (int l = 0; l<min;l++) {
 			String s1 = s.substring(l,l+1);
 			String s2 = t.substring(l, l+1);
-			System.out.println("------------" + s1 + " " + s2 + " __________");
 			if (s1.equals(s2)) {
 				
 			}else {
@@ -26,17 +24,13 @@ public class CCC03S4 {
 			String [] s = new String [string.length()];
 			for (int x = 0; x<string.length();x++) {
 				s[x] = string.substring(x,string.length());
-				System.out.println(s[x]);
 			}
 			Arrays.sort(s);
-			for (String st : s) {
-				System.out.println(st);
-			}
+
 			int count = s[0].length() + 1;
 			for (int y = 1; y<s.length;y++) {
 				
 				int lcp = LCP(s[y] , s[y-1]);
-				System.out.println(s[y].length()-lcp + "  " + count);
 				count += s[y] .length() - lcp;
 			}
 			System.out.println(count);
