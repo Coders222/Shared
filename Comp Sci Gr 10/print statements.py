@@ -1,0 +1,6 @@
+print("this\n\n")
+print("is\\\n")
+print("")
+print("super\\ttricky!!")
+print("Welcome\n\nclass")
+print("!!!")
