@@ -6,7 +6,7 @@ low = a
 while not a <= 0:
     if a >= high:
         high = a
-    else:
+    elib b > a:
         low = a
     a = int(input())
 
