@@ -32,11 +32,12 @@ class clear(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        key = win.getKey()
-        if key == "c":
-            blank = Rectangle(Point(0, 0), Point(800, 600))
-            blank.setFill("white")
-            blank.draw(win)
+        while True:
+            key = win.getKey()
+            if key == "c":
+                blank = Rectangle(Point(0, 0), Point(800, 600))
+                blank.setFill("white")
+                blank.draw(win)
 
 
 class drawing(threading.Thread):
