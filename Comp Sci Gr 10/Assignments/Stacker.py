@@ -4,5 +4,5 @@ import winsound
 from playsound import playsound
 
 
-gamescreen = GraphWin("Stacker", 900, 900)
+gamescreen = GraphWin("Stacker", 900, 900, autoflush=False)
 
