@@ -4,11 +4,10 @@ import winsound
 import threading
 import time
 
-screen = "newTitle"
+screen = "newGame"
 hotkey = "space"
 
-
-while screen == "newTitle":
+while screen == "newGame":
     titleScreen = GraphWin("Stacker", 600, 600, autoflush=False)
     title = Text(Point(300, 75), "S T A C K E R")
     title.draw(titleScreen)
@@ -35,11 +34,7 @@ while screen == "newTitle":
     rulesRect.draw(titleScreen)
     screen = "title"
 
-    cont = False
     while screen == "title":
-        if cont:
-            screen = "newTitle"
-            break
         click = titleScreen.getMouse()
         if 385 >= click.getX() >= 215 and 240 >= click.getY() >= 220:  # if user clicks on classic
             titleScreen.close()
@@ -53,28 +48,28 @@ while screen == "newTitle":
             ]
             # 75 x 75
 
-            base = Line(Point(188, 825), Point(713, 825))
-            border2 = Line(Point(188, 75), Point(188, 825))
-            border3 = Line(Point(713, 75), Point(713, 825))
+            base = Line(Point(184, 830), Point(716, 830))
+            border2 = Line(Point(184, 70), Point(184, 830))
+            border3 = Line(Point(716, 70), Point(716, 830))
             base.draw(gameScreen)
             border2.draw(gameScreen)
             border3.draw(gameScreen)
 
             verticals = []
             for i in range(6):
-                s = Line(Point(263 + 75 * i, 75), Point(263 + 75 * i, 825))
+                s = Line(Point(260 + 76 * i, 70), Point(260 + 76 * i, 830))
                 verticals.append(s)
                 s.draw(gameScreen)
 
             horizontals = []
             for i in range(9):
-                s = Line(Point(188, 150 + 75 * i, ), Point(713, 150 + 75 * i))
+                s = Line(Point(184, 146 + 76 * i), Point(716, 146 + 76 * i))
                 horizontals.append(s)
                 s.draw(gameScreen)
 
             update()
 
-            sizes = [112, 75, 37]  # midpoints of the blocks
+            sizes = [114, 76, 38]
             # hotkey = "space"  -  defined this at the top now
             level = 0
             n = 0
@@ -84,6 +79,7 @@ while screen == "newTitle":
             size = sizes[n]
             placing = True
             stacking = True
+            prevPosition = 0
 
 
             class classicMode(threading.Thread):
@@ -100,42 +96,100 @@ while screen == "newTitle":
                     global placing
                     global starter
                     global direction
+                    global prevPosition
+                    global n
+
                     while stacking:
                         if starter == "left":
-                            position = 188 + size
+                            position = 184 + size
                             direction = 1
                         elif starter == "right":
-                            position = 188 + 525 - size
+                            position = 184 + 532 - size
                             direction = -1
 
-                        drawnblock = Image(Point(position, 788 - level * 75), block)
+                        drawnblock = Image(Point(position, 792 - level * 76), block)
                         drawnblock.draw(gameScreen)
 
                         placing = True
                         update()
                         draw = True
+
                         while placing:
                             end = time.time() + 0.75 - 0.05 * level
-                            while time.time() < end:  # while loop of 0.75 seconds
+                            while time.time() < end:
                                 key = gameScreen.checkKey()
                                 if key == hotkey:
+                                    """
+                                    print(prevPosition, position)
+                                    if level == 0:
+                                        prevPosition = position
+                                    # elif position + 1 == prevPosition:
+                                    #     position = position + 1
+                                    # elif position - 1 == prevPosition:
+                                    #     position = position - 1
+
+                                    elif prevPosition != position - 1:
+
+                                        # if n == 0 and prevPosition +- 149 == position:
+                                        #     n = 2
+
+                                        if prevPosition == position or prevPosition + - 1 == position:
+                                            prevPosition = position
+
+                                        elif position + 148 < prevPosition or position - 148 > prevPosition:
+                                            n = 2
+                                            block = blocks[n]
+                                            size = sizes[n]
+                                            drawnblock.undraw()
+                                            if prevPosition > position:
+                                                drawnblock = Image(Point(position + 74, 788 - level * 75), block)
+                                                drawnblock.draw(gameScreen)
+
+                                                # if n == 1 and
+                                                prevPosition = position + 74
+
+                                            elif prevPosition < position:
+                                                drawnblock = Image(Point(position - 75, 788 - level * 75), block)
+                                                drawnblock.draw(gameScreen)
+                                                prevPosition = position - 75
+
+                                        elif n != 2:
+                                            n = n + 1
+                                            block = blocks[n]
+                                            size = sizes[n]
+                                            drawnblock.undraw()
+
+                                            if prevPosition > position:
+                                                drawnblock = Image(Point(position + 37, 788 - level * 75), block)
+                                                drawnblock.draw(gameScreen)
+
+                                                # if n == 1 and
+                                                prevPosition = position + 37
+
+                                            elif prevPosition < position:
+                                                drawnblock = Image(Point(position - 37, 788 - level * 75), block)
+                                                drawnblock.draw(gameScreen)
+                                                prevPosition = position - 37
+                                            """
+
                                     placing = False
                                     stacking = False
                                     draw = False
+
                                     if starter == "left":
                                         starter = "right"
                                     else:
                                         starter = "left"
-                                    level += 1
-                                    print(level)
-                                    stacking = True
-                            if draw:
-                                drawnblock.move(75 * direction, 0)
-                                position += 75 * direction
-                                if position - (
-                                        size + 1) <= 188 or position + size + 1 >= 713:  # + 1 because its 1 pixel off
-                                    direction *= -1
 
+                                    level += 1
+                                    print(level)  # test code
+                                    stacking = True
+
+                            if draw:
+                                drawnblock.move(76 * direction, 0)
+                                position += 76 * direction
+                                if position - size <= 184 or position + size >= 716:
+                                    direction *= -1
 
             thread1 = classicMode()
             thread1.start()
@@ -190,11 +244,10 @@ while screen == "newTitle":
 
                 elif 350 >= click.getX() >= 50 and 350 >= click.getY() >= 300:
                     hotkeyScreen.close()
-                    screen = "newTitle"
+                    screen = "newGame"
                     continue
 
         elif 335 >= click.getX() >= 265 and 460 >= click.getY() >= 435:  # if user clicks on rules
-            titleScreen.close()
             rulesScreen = GraphWin("Rules", 500, 500, autoflush=False)
             skip = False
             while True:
@@ -212,7 +265,8 @@ while screen == "newTitle":
                     text1.setFill("blue")
                     pg1.append(text1)
 
-                    rule1 = Text(Point(250, 100), "1. You will be given a starter 3x1 block to stack that is constantly moving")
+                    rule1 = Text(Point(250, 100),
+                                 "1. You will be given a starter 3x1 block to stack that is constantly moving")
                     rule1.setSize(10)
                     rule1.draw(rulesScreen)
                     pg1.append(rule1)
@@ -228,7 +282,8 @@ while screen == "newTitle":
                     rule3.setSize(10)
                     rule3.draw(rulesScreen)
                     pg1.append(rule3)
-                    rule4 = Text(Point(250, 250), "4. Speeds of the block constantly moving will increase after each level")
+                    rule4 = Text(Point(250, 250),
+                                 "4. Speeds of the block constantly moving will increase after each level")
                     rule4.setSize(10)
                     rule4.draw(rulesScreen)
                     pg1.append(rule4)
@@ -287,6 +342,16 @@ while screen == "newTitle":
                     rule2.draw(rulesScreen)
                     pg2.append(rule2)
 
+                    rule3 = Text(Point(150, 175), "* Slow-mo: Slow down the speed for your current block "
+                                                  "by a random speed")
+                    rule3.setSize(10)
+                    rule3.draw(rulesScreen)
+
+                    rule3 = Text(Point(150, 200), "* ")
+                    rule3.setSize(10)
+                    rule3.draw(rulesScreen)
+
+
                     exittext = Text(Point(475, 485), "Exit")
                     exittext.setFill("red")
                     exittext.draw(rulesScreen)
@@ -312,8 +377,6 @@ while screen == "newTitle":
                             page2 = False
                             break
                         click = rulesScreen.getMouse()
-
-
 
 
 titleScreen.mainloop()
