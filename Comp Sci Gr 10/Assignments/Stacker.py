@@ -44,7 +44,7 @@ while screen == "newGame":
             blocks = [
                 "images/3block.gif",
                 "images/2block.gif",
-                "images/  1block.gif"
+                "images/1block.gif"
             ]
             # 75 x 75
 
@@ -79,7 +79,9 @@ while screen == "newGame":
             size = sizes[n]
             placing = True
             stacking = True
+            end = False
             prevPosition = 0
+
 
 
             class classicMode(threading.Thread):
@@ -99,6 +101,7 @@ while screen == "newGame":
                     global prevPosition
                     global n
                     global screen
+                    global end
 
                     while stacking:
                         if starter == "left":
@@ -136,27 +139,31 @@ while screen == "newGame":
                                         stacking = False
                                         placing = False
                                         draw = False
+                                        end = True
 
-                                    elif position != prevPosition:  # if it is any way off
+                                    elif position != prevPosition:
                                         if block == 2:
                                             print("User has lost")
                                             stacking = False
                                             placing = False
                                             draw = False
+                                            end = True
 
                                         elif block == 1 and prevPosition - position > 76 or prevPosition - position < -76:
                                             print("User has lost")
                                             stacking = False
                                             placing = False
                                             draw = False
+                                            end = True
 
                                         elif block == 0 and prevPosition - position > 152 or prevPosition - position < -152:
                                             print("User has lost")
                                             stacking = False
                                             placing = False
                                             draw = False
+                                            end = True
 
-                                        if n != 2:
+                                        if n != 2 and end == False:
                                             n = n + 1
                                             block = blocks[n]
                                             size = sizes[n]
@@ -196,7 +203,11 @@ while screen == "newGame":
 
                                     level += 1
                                     print(level)  # test code
+
                                     stacking = True
+                                    if end == True:
+                                        drawnblock.undraw()
+                                        stacking = False
 
                             if draw:
                                 drawnblock.move(76 * direction, 0)
