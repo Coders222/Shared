@@ -44,7 +44,7 @@ while screen == "newGame":
             blocks = [
                 "images/3block.gif",
                 "images/2block.gif",
-                "images/1block.gif"
+                "images/  1block.gif"
             ]
             # 75 x 75
 
@@ -98,6 +98,7 @@ while screen == "newGame":
                     global direction
                     global prevPosition
                     global n
+                    global screen
 
                     while stacking:
                         if starter == "left":
@@ -119,62 +120,74 @@ while screen == "newGame":
                             while time.time() < end:
                                 key = gameScreen.checkKey()
                                 if key == hotkey:
-                                    """
-                                    print(prevPosition, position)
+
+                                    print("Previous Position:", prevPosition, "New Position:", position)
+
+                                    placing = False
+                                    stacking = False
+                                    draw = False
+
+                                    # - - - Hit Reg - - - -
+
                                     if level == 0:
                                         prevPosition = position
-                                    # elif position + 1 == prevPosition:
-                                    #     position = position + 1
-                                    # elif position - 1 == prevPosition:
-                                    #     position = position - 1
+                                    elif level == 9 and prevPosition == position:
+                                        print("User has won")
+                                        stacking = False
+                                        placing = False
+                                        draw = False
 
-                                    elif prevPosition != position - 1:
+                                    elif position != prevPosition:  # if it is any way off
+                                        if block == 2:
+                                            print("User has lost")
+                                            stacking = False
+                                            placing = False
+                                            draw = False
 
-                                        # if n == 0 and prevPosition +- 149 == position:
-                                        #     n = 2
+                                        elif block == 1 and prevPosition - position > 76 or prevPosition - position < -76:
+                                            print("User has lost")
+                                            stacking = False
+                                            placing = False
+                                            draw = False
 
-                                        if prevPosition == position or prevPosition + - 1 == position:
-                                            prevPosition = position
+                                        elif block == 0 and prevPosition - position > 152 or prevPosition - position < -152:
+                                            print("User has lost")
+                                            stacking = False
+                                            placing = False
+                                            draw = False
 
-                                        elif position + 148 < prevPosition or position - 148 > prevPosition:
-                                            n = 2
-                                            block = blocks[n]
-                                            size = sizes[n]
-                                            drawnblock.undraw()
-                                            if prevPosition > position:
-                                                drawnblock = Image(Point(position + 74, 788 - level * 75), block)
-                                                drawnblock.draw(gameScreen)
-
-                                                # if n == 1 and
-                                                prevPosition = position + 74
-
-                                            elif prevPosition < position:
-                                                drawnblock = Image(Point(position - 75, 788 - level * 75), block)
-                                                drawnblock.draw(gameScreen)
-                                                prevPosition = position - 75
-
-                                        elif n != 2:
+                                        if n != 2:
                                             n = n + 1
                                             block = blocks[n]
                                             size = sizes[n]
                                             drawnblock.undraw()
 
+                                        if position + 76 != prevPosition or position - 76 != prevPosition:
                                             if prevPosition > position:
-                                                drawnblock = Image(Point(position + 37, 788 - level * 75), block)
+                                                drawnblock = Image(Point(position + 38, 792 - level * 76), block)
                                                 drawnblock.draw(gameScreen)
+                                                prevPosition = position + 38
+                                            elif prevPosition < position:
+                                                drawnblock = Image(Point(position - 38, 792 - level * 76), block)
+                                                drawnblock.draw(gameScreen)
+                                                prevPosition = position - 38
 
-                                                # if n == 1 and
-                                                prevPosition = position + 37
+                                        elif position + 152 == prevPosition or position - 152 == prevPosition:
+                                            n = 2
+                                            block = blocks[n]
+                                            size = sizes[n]
+
+                                            if prevPosition > position:
+                                                drawnblock = Image(Point(position + 76, 792 - level * 76), block)
+                                                drawnblock.draw(gameScreen)
+                                                prevPosition = position + 76
 
                                             elif prevPosition < position:
-                                                drawnblock = Image(Point(position - 37, 788 - level * 75), block)
+                                                drawnblock = Image(Point(position - 76, 792 - level * 76), block)
                                                 drawnblock.draw(gameScreen)
-                                                prevPosition = position - 37
-                                            """
+                                                prevPosition = position - 76
 
-                                    placing = False
-                                    stacking = False
-                                    draw = False
+                                    # - - - - - - - - - - -
 
                                     if starter == "left":
                                         starter = "right"
@@ -342,15 +355,27 @@ while screen == "newGame":
                     rule2.draw(rulesScreen)
                     pg2.append(rule2)
 
-                    rule3 = Text(Point(150, 175), "* Slow-mo: Slow down the speed for your current block "
-                                                  "by a random speed")
+                    rule3 = Text(Point(175, 175), "* Slow-mo: Slow down the speed for your")
                     rule3.setSize(10)
                     rule3.draw(rulesScreen)
 
-                    rule3 = Text(Point(150, 200), "* ")
-                    rule3.setSize(10)
-                    rule3.draw(rulesScreen)
+                    rule6 = Text(Point(225, 190), "your next block at a random speed")
+                    rule6.setSize(10)
+                    rule6.draw(rulesScreen)
 
+                    rule4 = Text(Point(225, 225), "* Extended block: Extends your current block by 1 to get a")
+                    rule4.setSize(10)
+                    rule4.draw(rulesScreen)
+
+                    rule5 = Text(Point(268, 240), "higher chance of stacking it correctly")
+                    rule5.setSize(10)
+                    rule5.draw(rulesScreen)
+
+                    rule5 = Text(Point(250, 350), "ALSO, ENDLESS STACKING")
+                    rule5.setOutline("black")
+                    rule5.setFill("PURPLE")
+                    rule5.setSize(25)
+                    rule5.draw(rulesScreen)
 
                     exittext = Text(Point(475, 485), "Exit")
                     exittext.setFill("red")
