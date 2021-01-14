@@ -27,11 +27,18 @@ while screen == "newGame":
     hotkeyTitle.setSize(17)
     keyRect = Rectangle(Point(215, 390), Point(385, 410))
     keyRect.draw(titleScreen)
-    rules = Text(Point(300, 450), "Rules")
+    rules = Text(Point(300, 447), "Rules")
     rules.draw(titleScreen)
-    rules.setSize(17)
+    rules.setSize(20)
     rulesRect = Rectangle(Point(265, 460), Point(335, 435))
     rulesRect.draw(titleScreen)
+
+    leaveText = Text(Point(550, 550), "Quit")
+    leaveText.setSize(20)
+    leaveRect = Rectangle(Point(520, 535), Point(580, 565))
+    leaveText.draw(titleScreen)
+    leaveRect.draw(titleScreen)
+
     screen = "title"
 
     while screen == "title":
@@ -382,7 +389,7 @@ while screen == "newGame":
                     rule5.setSize(10)
                     rule5.draw(rulesScreen)
 
-                    rule5 = Text(Point(250, 350), "ALSO, ENDLESS STACKING")
+                    rule5 = Text(Point(250, 350), "ALSO, ENDLESS STACKING >:)")
                     rule5.setOutline("black")
                     rule5.setFill("PURPLE")
                     rule5.setSize(25)
@@ -413,6 +420,9 @@ while screen == "newGame":
                             page2 = False
                             break
                         click = rulesScreen.getMouse()
+
+        elif 520 <= click.getX() <= 580 and 535 <= click.getY() <= 565:  # if user wants to quit
+            quit()
 
 
 titleScreen.mainloop()
