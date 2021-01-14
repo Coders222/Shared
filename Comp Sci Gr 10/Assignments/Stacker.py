@@ -36,7 +36,14 @@ while screen == "newGame":
     leaveText = Text(Point(550, 550), "Quit")
     leaveText.setSize(20)
     leaveRect = Rectangle(Point(520, 535), Point(580, 565))
+    leaveRect.draw(titleScreen)
     leaveText.draw(titleScreen)
+
+    aboutText = Text(Point(50, 550), "About")
+    aboutText.setSize(20)
+    aboutRect = Rectangle(Point(10, 535), Point(90, 565))
+    aboutText.draw(titleScreen)
+    aboutRect.draw(titleScreen)
 
     screen = "title"
 
@@ -423,5 +430,22 @@ while screen == "newGame":
         elif 520 <= click.getX() <= 580 and 535 <= click.getY() <= 565:  # if user wants to quit
             quit()
 
+        elif 10 <= click.getX() <= 90 and 535 <= click.getY() <= 565:
+            aboutScreen = GraphWin("About", 500, 500)
+
+            exitAbout = Text(Point(450, 450), "Exit")
+            exitAbout.setSize(20)
+            exitRect = Rectangle(Point(425, 435), Point(475, 465))
+            exitRect.draw(aboutScreen)
+            exitAbout.draw(aboutScreen)
+
+            # insert about info
+
+            click = aboutScreen.getMouse()
+            while True:
+                if 425 <= click.getX() <= 475 and 435 <= click.getY() <= 465:
+                    aboutScreen.close()
+                    break
+                click = aboutScreen.getMouse()
 
 titleScreen.mainloop()
