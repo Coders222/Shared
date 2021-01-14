@@ -37,7 +37,6 @@ while screen == "newGame":
     leaveText.setSize(20)
     leaveRect = Rectangle(Point(520, 535), Point(580, 565))
     leaveText.draw(titleScreen)
-    leaveRect.draw(titleScreen)
 
     screen = "title"
 
