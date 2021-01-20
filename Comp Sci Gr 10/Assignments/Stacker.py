@@ -6,8 +6,53 @@ import time
 
 screen = "newGame"
 hotkey = "space"
+ending = "none"
 
 while screen == "newGame":
+    if ending == "win":
+        winScreen = GraphWin("WINNER WINNER CHICKEN DINNER", 500, 500)
+        winText = Text(Point(250, 200), "YOU WIN")
+        winText.draw(winScreen)
+        winText.setSize(35)
+        newGame = Text(Point(250, 300), "New Game")
+        newGame.draw(winScreen)
+        newGame.setSize(15)
+        rect1 = Rectangle(Point(200, 290), Point(300, 310))
+        rect1.draw(winScreen)
+        exitGame = Text(Point(250, 340), "Exit Game")
+        exitGame.draw(winScreen)
+        exitGame.setSize(15)
+        rect2 = Rectangle(Point(200, 330), Point(300, 350))
+        rect2.draw(winScreen)
+        while screen == "newGame":
+            click = winScreen.getMouse()
+            if 300 >= click.getX() >= 200 and 310 >= click.getY() >= 290:
+                winScreen.close()
+                screen = "title"
+            elif 300 >= click.getX() >= 200 and 350 >= click.getY() >= 330:
+                quit()
+    elif ending == "lose":
+        loseScreen = GraphWin("Wow so sad you lost", 500, 500)
+        loseText = Text(Point(250, 200), "YOU LOSE")
+        loseText.draw(loseScreen)
+        loseText.setSize(35)
+        newGame = Text(Point(250, 300), "New Game")
+        newGame.draw(loseScreen)
+        newGame.setSize(15)
+        rect1 = Rectangle(Point(200, 290), Point(300, 310))
+        rect1.draw(loseScreen)
+        exitGame = Text(Point(250, 340), "Exit Game")
+        exitGame.draw(loseScreen)
+        exitGame.setSize(15)
+        rect2 = Rectangle(Point(200, 330), Point(300, 350))
+        rect2.draw(loseScreen )
+        while screen == "newGame":
+            click = loseScreen.getMouse()
+            if 300 >= click.getX() >= 200 and 310 >= click.getY() >= 290:
+                loseScreen.close()
+                screen = "title"
+            elif 300 >= click.getX() >= 200 and 350 >= click.getY() >= 330:
+                quit()
     titleScreen = GraphWin("Stacker", 600, 600, autoflush=False)
     title = Text(Point(300, 75), "S T A C K E R")
     title.draw(titleScreen)
@@ -44,9 +89,7 @@ while screen == "newGame":
     aboutRect = Rectangle(Point(10, 535), Point(90, 565))
     aboutText.draw(titleScreen)
     aboutRect.draw(titleScreen)
-
     screen = "title"
-
     while screen == "title":
         click = titleScreen.getMouse()
 
@@ -68,12 +111,26 @@ while screen == "newGame":
         end = False
         direction = 1
         prevPosition = 0
+        endless = False
+        height = 0
+
+        if 385 >= click.getX() >= 215 and 295 >= click.getY() >= 275:  # if user wants to endless
+            endless = True
+            click = Point(385, 240)
 
         if 385 >= click.getX() >= 215 and 240 >= click.getY() >= 220:  # if user clicks on classic
             titleScreen.close()
             gameScreen = GraphWin("Stacker", 900, 900, autoflush=False)
 
-            screen = "classic"
+            if not endless:
+                modeText = Text(Point(800, 850), "Mode: Classic")
+            else:
+                modeText = Text(Point(800, 850), "Mode: Endless")
+
+            modeText.setSize(15)
+            modeText.draw(gameScreen)
+
+            scoreText = Text(Point(800, 50), "Score: " + str(level))
 
             base = Line(Point(184, 830), Point(716, 830))
             border2 = Line(Point(184, 70), Point(184, 830))
@@ -96,6 +153,8 @@ while screen == "newGame":
 
             update()
 
+            drawnblocks = []
+
             while stacking:
                 if starter == "left":
                     position = 184 + size
@@ -104,35 +163,42 @@ while screen == "newGame":
                     position = 184 + 532 - size
                     direction = -1
 
-                drawnblock = Image(Point(position, 792 - level * 76), block)
+                drawnblock = Image(Point(position, 792 - height * 76), block)
                 drawnblock.draw(gameScreen)
-
-                placing = True
-                update()
                 draw = True
+                placing = True
+
+                scoreText.undraw()
+                scoreText = Text(Point(800, 50), "Score: " + str(level))
+                scoreText.draw(gameScreen)
+                update()
 
                 while placing:
-                    timeEnd = time.time() + 0.75 - 0.05 * level
-                    while time.time() < timeEnd:
+                    timeEnd = time.time() + 0.5  # 0.75 - 0.05 * level
+                    while time.time() < timeEnd:  # time for input
                         key = gameScreen.checkKey()
                         if key == hotkey:
+                            drawnblocks.append(drawnblock)
+                            print(drawnblocks)
                             print("Previous Position:", prevPosition, "New Position:", position)
 
                             placing = False
-                            stacking = False
                             draw = False
 
                             # - - - Hit Reg - - - -
 
                             if level == 0:
                                 prevPosition = position
-                            elif level == 9 and prevPosition == position and n == 2:
-                                print("WINNER WINNER CHICKEN DINNER")
-                                end = True
+                            elif not endless:
+                                if level == 9 and prevPosition == position and n == 2:
+                                    print("WINNER WINNER CHICKEN DINNER")
+                                    end = True
+                                    ending = "win"
 
                             if prevPosition - position >= size * 2 or position - prevPosition >= size * 2:
                                 end = True
-                                print("GAME OVER")
+                                print("GAME OVER, You lose")
+                                ending = "lose"
 
                             if position != prevPosition and not end:
                                 if (n == 0 or n == 1) and (position + 76 == prevPosition or position - 76 == prevPosition):
@@ -141,12 +207,14 @@ while screen == "newGame":
                                     size = sizes[n]
                                     drawnblock.undraw()
                                     if prevPosition > position:
-                                        drawnblock = Image(Point(position + 38, 792 - level * 76), block)
+                                        drawnblock = Image(Point(position + 38, 792 - height * 76), block)
                                         drawnblock.draw(gameScreen)
+                                        drawnblocks.append(drawnblock)
                                         prevPosition = position + 38
                                     elif prevPosition < position:
-                                        drawnblock = Image(Point(position - 38, 792 - level * 76), block)
+                                        drawnblock = Image(Point(position - 38, 792 - height * 76), block)
                                         drawnblock.draw(gameScreen)
+                                        drawnblocks.append(drawnblock)
                                         prevPosition = position - 38
 
                                 elif n == 0 and position + 152 == prevPosition or position - 152 == prevPosition:
@@ -157,13 +225,15 @@ while screen == "newGame":
                                     drawnblock.undraw()
 
                                     if prevPosition > position:
-                                        drawnblock = Image(Point(position + 76, 792 - level * 76), block)
+                                        drawnblock = Image(Point(position + 76, 792 - height * 76), block)
                                         drawnblock.draw(gameScreen)
+                                        drawnblocks.append(drawnblocks)
                                         prevPosition = position + 76
 
                                     elif prevPosition < position:
-                                        drawnblock = Image(Point(position - 76, 792 - level * 76), block)
+                                        drawnblock = Image(Point(position - 76, 792 - height * 76), block)
                                         drawnblock.draw(gameScreen)
+                                        drawnblocks.append(drawnblock)
                                         prevPosition = position - 76
 
                             # - - - - - - - - - - -
@@ -174,9 +244,9 @@ while screen == "newGame":
                                 starter = "left"
 
                             level += 1
+                            height += 1
                             print(level)  # test code
 
-                            stacking = True
                             if end:
                                 stacking = False
                                 placing = False
@@ -194,16 +264,20 @@ while screen == "newGame":
                                 screen = "newGame"
                                 gameScreen.close()
 
-                    if draw:
+                            elif level == 10 or (level - 10) % 9 == 0 and not level == 1:  # if it hits the top block
+                                for i in drawnblocks:
+                                    i.undraw()
+                                height = 1
+                                prevBlock = Image(Point(prevPosition, 792), block)
+                                prevBlock.draw(gameScreen)
+                                drawnblocks = [prevBlock]
+                                print("went thru")
+
+                    if draw:  # the physical moving of the block
                         drawnblock.move(76 * direction, 0)
                         position += 76 * direction
                         if position - size <= 184 or position + size >= 716:
                             direction *= -1
- 
-        elif 385 >= click.getX() >= 215 and 295 >= click.getY() >= 275:  # if user wants to endless
-            titleScreen.close()
-            gameScreen = GraphWin("Stacker", 900, 900, autoflush=False)
-            screen = "endless game"
 
         elif 385 >= click.getX() >= 215 and 410 >= click.getY() >= 390:  # if user clicks on hotkey
             titleScreen.close()
@@ -251,6 +325,7 @@ while screen == "newGame":
                 elif 350 >= click.getX() >= 50 and 350 >= click.getY() >= 300:
                     hotkeyScreen.close()
                     screen = "newGame"
+                    ending = "none"
                     continue
 
         elif 335 >= click.getX() >= 265 and 460 >= click.getY() >= 435:  # if user clicks on rules
@@ -276,8 +351,8 @@ while screen == "newGame":
                     rule1.setSize(10)
                     rule1.draw(rulesScreen)
                     pg1.append(rule1)
-                    rule2 = Text(Point(250, 150),
-                                 "2. The default hot key to stack is space, try to stack all blocks on your previous one")
+                    rule2 = Text(Point(250, 150), "2. The default hot key to stack is space, try to stack all "
+                                                  "blocks on your previous one")
                     pg1.append(rule2)
                     rule2.setSize(10)
                     rule2.draw(rulesScreen)
