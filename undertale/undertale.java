@@ -93,7 +93,7 @@ public class undertale extends JPanel implements KeyListener, MouseListener, Run
 
 
 			}
-			
+			// quit 
 			else if (295 <= mouseX && mouseX <= 535 && 335 <= mouseY && mouseY <= 405) {
 				System.out.println("quit");
 				System.exit(0); // terminates the program
