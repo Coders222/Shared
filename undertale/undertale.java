@@ -21,12 +21,17 @@ public class undertale extends JPanel implements KeyListener, MouseListener, Run
 	BufferedImage titleScreen;
 	
 	public undertale() {
-		setPreferredSize(new Dimension(800, 500));
+		
+		
+		// 10 pixels less height and width than the background because
+		// for some reason there is extra space when defining the frame
+		// to be the same size as the background image
+		setPreferredSize(new Dimension(990, 615));  
 		setBackground(new Color(255, 255, 255));
 		
 		// import images
 		try {
-			titleScreen = ImageIO.read(new File("undertalestartmenu.png"));
+			titleScreen = ImageIO.read(new File("assets/undertalestartmenu.png"));
 			
 		}
 		catch (Exception e) {
@@ -83,18 +88,18 @@ public class undertale extends JPanel implements KeyListener, MouseListener, Run
 		if (gameState == 0) {
 			
 			// play game
-			if (295 <= mouseX && mouseX <= 535 && 150 <= mouseY && mouseY <= 215) {
+			if (370 <= mouseX && mouseX <= 670 && 185 <= mouseY && mouseY <= 270) {
 				System.out.println("play");
 			}
 			
 			// about 
-			else if (295 <= mouseX && mouseX <= 535 && 243 <= mouseY && mouseY <= 310) {
+			else if (370 <= mouseX && mouseX <= 670 && 300 <= mouseY && mouseY <= 390) {
 				System.out.println("about");
 
 
 			}
-			// quit 
-			else if (295 <= mouseX && mouseX <= 535 && 335 <= mouseY && mouseY <= 405) {
+			
+			else if (370 <= mouseX && mouseX <= 670 && 420 <= mouseY && mouseY <= 505) {
 				System.out.println("quit");
 				System.exit(0); // terminates the program
 			}
