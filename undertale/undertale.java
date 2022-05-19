@@ -36,7 +36,6 @@ public class undertale extends JPanel implements KeyListener, MouseListener, Run
 	
 	// images
 	BufferedImage titleScreen;
-	BufferedImage blackScreen;
 	BufferedImage ruins;
 	
 	// position
@@ -57,7 +56,6 @@ public class undertale extends JPanel implements KeyListener, MouseListener, Run
 		// import images
 		try {
 			titleScreen = ImageIO.read(new File("assets/undertalestartmenu.png"));
-			blackScreen = ImageIO.read(new File("assets/blackscreen.png"));
 			ruins = ImageIO.read(new File("assets/ruins.png"));
 		}
 		catch (Exception e) {
